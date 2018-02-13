@@ -1,5 +1,7 @@
 package com.coviam.booking.service;
 
+import com.coviam.booking.dto.BookingDTO;
+import com.coviam.booking.dto.BookingDetailsDTO;
 import com.coviam.booking.dto.PaymentStatusDTO;
 import com.coviam.booking.entity.Booking;
 
@@ -28,5 +30,7 @@ public interface BookingService {
      * @return : THE SAME DTO OBJECT THAT WAS PASSED
      */
     Booking updateBookingPaymentStatus(PaymentStatusDTO paymentStatusDTO, Booking bookingDTO);
+
+    BookingDetailsDTO getBookingDetailsFromSuperPnr(String superPnr);
 
 }

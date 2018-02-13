@@ -2,6 +2,7 @@ package com.coviam.booking.controllers;
 
 
 import com.coviam.booking.dto.BookingDTO;
+import com.coviam.booking.dto.BookingDetailsDTO;
 import com.coviam.booking.dto.PaymentStatusDTO;
 import com.coviam.booking.entity.Booking;
 import com.coviam.booking.service.BookingService;
@@ -35,15 +36,13 @@ public class BookingController {
 
 
     @RequestMapping(
-            value = "/{id}",
+            value = "/superPnr/{superPnr}",
             method = RequestMethod.GET,
             produces = APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> getBooking(@PathVariable("id") String id) {
-        Booking booking = bookingService.getBookingFromId(id);
-        BookingDTO bookingDTO =new BookingDTO();
-        BeanUtils.copyProperties(booking,bookingDTO);
-        return new ResponseEntity<>(bookingDTO, OK);
+    public ResponseEntity<?> getBooking(@PathVariable("superPnr") String superPnr) {
+        BookingDetailsDTO bookingDetailsDTO = bookingService.getBookingDetailsFromSuperPnr(superPnr);
+        return new ResponseEntity<>(bookingDetailsDTO, OK);
     }
 
 
