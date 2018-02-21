@@ -1,5 +1,7 @@
 package com.coviam.booking;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,7 @@ import java.io.IOException;
 public class BookingServiceApplication {
 
     public static void main(String[] args) {
+
         SpringApplication.run(BookingServiceApplication.class, args);
     }
 
@@ -37,6 +40,11 @@ public class BookingServiceApplication {
             }
         });
         return template;
+    }
+
+    @Bean
+    public Logger getLogger() {
+        return LogManager.getLogger(this.getClass().getPackage().getName());
     }
 
 }

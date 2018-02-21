@@ -7,8 +7,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="booking_user_details")
+@Table(name = Passenger.TABLE_NAME)
 public class Passenger implements Serializable {
+    public static final String TABLE_NAME = "booking_user_details";
 
     @Id
     @Column(name = "id")
@@ -65,7 +66,7 @@ public class Passenger implements Serializable {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", age='" + age + '\'' +
-                ", superPnr=" + booking.getId() +
+                ", booking=" + booking +
                 '}';
     }
 }

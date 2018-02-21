@@ -1,21 +1,30 @@
 package com.coviam.booking.entity;
 
-import com.coviam.booking.util.Auditable;
+import com.coviam.booking.entity.enums.BookingStatus;
+import com.coviam.booking.entity.enums.PaymentStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.coviam.booking.entity.Booking.Status.PENDING;
-
 @Entity
 @Table(name = Booking.TABLE_NAME)
 @EntityListeners(AuditingEntityListener.class)
-public class Booking extends Auditable<String> implements Serializable {
+public class Booking implements Serializable {
     public static final String TABLE_NAME = "booking_master";
 
     @Id
@@ -32,7 +41,7 @@ public class Booking extends Auditable<String> implements Serializable {
 
     @Column(name = "booking_status")
     @Enumerated(EnumType.STRING)
-    private Status bookingStatus = PENDING;
+    private BookingStatus bookingStatus = BookingStatus.PENDING;
 
     @Column(name = "payment_id")
     private String paymentId;
@@ -42,7 +51,7 @@ public class Booking extends Auditable<String> implements Serializable {
 
     @Column(name = "payment_status")
     @Enumerated(EnumType.STRING)
-    private Status paymentStatus = PENDING;
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
 
     @Column(name = "booking_type")
     private String bookingType = "flight";
@@ -64,14 +73,12 @@ public class Booking extends Auditable<String> implements Serializable {
     @JsonManagedReference
     private List<Passenger> passengers = new ArrayList<>();
 
-    public static enum Status {PENDING, SUCCESSFUL, DEFERRED, CANCELLED};
-
-    public String getPaymentId() {
-        return paymentId;
+    public String getId() {
+        return id;
     }
 
-    public void setPaymentId(String paymentId) {
-        this.paymentId = paymentId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -82,22 +89,6 @@ public class Booking extends Auditable<String> implements Serializable {
         this.userId = userId;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Status getBookingStatus() {
-        return bookingStatus;
-    }
-
-    public void setBookingStatus(Status bookingStatus) {
-        this.bookingStatus = bookingStatus;
-    }
-
     public String getSuperPnr() {
         return superPnr;
     }
@@ -106,11 +97,35 @@ public class Booking extends Auditable<String> implements Serializable {
         this.superPnr = superPnr;
     }
 
-    public Status getPaymentStatus() {
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(Status paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -154,14 +169,6 @@ public class Booking extends Auditable<String> implements Serializable {
         this.passengers = passengers;
     }
 
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
     @Override
     public String toString() {
         return "Booking{" +
@@ -176,7 +183,7 @@ public class Booking extends Auditable<String> implements Serializable {
                 ", bookingSource='" + bookingSource + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", bookingEmail='" + bookingEmail + '\'' +
-                ", passengersCount=" + passengers.size() +
+                ", passengers=" + passengers +
                 '}';
     }
 }

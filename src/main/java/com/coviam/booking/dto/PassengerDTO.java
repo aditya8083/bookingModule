@@ -8,7 +8,6 @@ public class PassengerDTO implements Serializable {
     private String id;
     private String name;
     private String age;
-    private BookingDTO booking;
 
     public String getId() {
         return id;
@@ -34,14 +33,6 @@ public class PassengerDTO implements Serializable {
         this.age = age;
     }
 
-    public BookingDTO getBooking() {
-        return booking;
-    }
-
-    public void setBooking(BookingDTO booking) {
-        this.booking = booking;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,18 +40,16 @@ public class PassengerDTO implements Serializable {
 
         PassengerDTO that = (PassengerDTO) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!name.equals(that.name)) return false;
-        if (!age.equals(that.age)) return false;
-        return booking.equals(that.booking);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        return age != null ? age.equals(that.age) : that.age == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + age.hashCode();
-        result = 31 * result + booking.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (age != null ? age.hashCode() : 0);
         return result;
     }
 
@@ -70,7 +59,6 @@ public class PassengerDTO implements Serializable {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", age='" + age + '\'' +
-                ", booking=" + booking +
                 '}';
     }
 }

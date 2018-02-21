@@ -2,7 +2,7 @@
 <Configuration status="info">
     <Appenders>
         <Console name="Console">
-            <PatternLayout pattern="%d{HH:mm:ss} %c{3} %highlight{[%C{2}] %p : %L}{DEBUG=BLUE} : %style{%msg}{Bright} %n"/>
+            <PatternLayout pattern="%d{HH:mm:ss} %c{3} %highlight{[%C{30}] %p : %L}{DEBUG=BLUE} : %style{%msg}{Bright} %n"/>
         </Console>
 
         <File name="file" fileName="logOutput.log" append="false">

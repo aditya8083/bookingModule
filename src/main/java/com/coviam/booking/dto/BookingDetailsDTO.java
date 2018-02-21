@@ -1,12 +1,8 @@
 package com.coviam.booking.dto;
 
-import com.coviam.booking.entity.Booking;
-
-import java.util.ArrayList;
+import javax.validation.constraints.AssertFalse;
 import java.util.List;
 import java.util.Objects;
-
-import static com.coviam.booking.entity.Booking.Status.PENDING;
 
 public class BookingDetailsDTO {
 

@@ -18,10 +18,10 @@ public interface BookingService {
 
     /**
      * INSERT A NEW BOOKING IN BOOKING TABLE
-     * @param booking : DATA RECEIVED FROM FRONT END TO BE INSERTED
+     * @param bookingDTO : DATA RECEIVED FROM FRONT END TO BE INSERTED
      * @return : THE DTO THAT WAS PASSED
      */
-    Booking createBooking(Booking booking);
+    BookingDTO createBooking(BookingDTO bookingDTO);
 
     /**
      * UPDATE THE STATUS OF BOOKING THAT IS REFERENCED BY BOOKING ID

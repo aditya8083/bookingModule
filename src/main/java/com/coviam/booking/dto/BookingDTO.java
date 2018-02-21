@@ -1,23 +1,21 @@
 package com.coviam.booking.dto;
 
-import com.coviam.booking.entity.Booking;
-import org.springframework.beans.BeanUtils;
+import com.coviam.booking.entity.enums.BookingStatus;
+import com.coviam.booking.entity.enums.PaymentStatus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.coviam.booking.entity.Booking.Status.PENDING;
 
 public class BookingDTO implements Serializable{
 
     private String id;
     private String userId;
     private String superPnr;
-    private Booking.Status bookingStatus = PENDING;
+    private String bookingStatus = BookingStatus.PENDING.toString();
     private String paymentId;
     private Double amount;
-    private Booking.Status paymentStatus = PENDING;
+    private String paymentStatus = PaymentStatus.PENDING.toString();
     private String bookingType = "flight";
     private String bookingSource = "web";
     private String phoneNumber;
@@ -48,11 +46,11 @@ public class BookingDTO implements Serializable{
         this.superPnr = superPnr;
     }
 
-    public Booking.Status getBookingStatus() {
+    public String getBookingStatus() {
         return bookingStatus;
     }
 
-    public void setBookingStatus(Booking.Status bookingStatus) {
+    public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
 
@@ -72,11 +70,11 @@ public class BookingDTO implements Serializable{
         this.amount = amount;
     }
 
-    public Booking.Status getPaymentStatus() {
+    public String getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(Booking.Status paymentStatus) {
+    public void setPaymentStatus(String paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -120,47 +118,45 @@ public class BookingDTO implements Serializable{
         this.passengers = passengers;
     }
 
-    public BookingDTO inflateFromBooking(Booking booking) {
-        BeanUtils.copyProperties(booking, this);
-        return this;
-
-    }
-
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         BookingDTO that = (BookingDTO) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!userId.equals(that.userId)) return false;
-        if (!superPnr.equals(that.superPnr)) return false;
-        if (bookingStatus != that.bookingStatus) return false;
-        if (!paymentId.equals(that.paymentId)) return false;
-        if (!amount.equals(that.amount)) return false;
-        if (paymentStatus != that.paymentStatus) return false;
-        if (!bookingType.equals(that.bookingType)) return false;
-        if (!bookingSource.equals(that.bookingSource)) return false;
-        if (!phoneNumber.equals(that.phoneNumber)) return false;
-        if (!bookingEmail.equals(that.bookingEmail)) return false;
-        return passengers.equals(that.passengers);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (superPnr != null ? !superPnr.equals(that.superPnr) : that.superPnr != null) return false;
+        if (bookingStatus != null ? !bookingStatus.equals(that.bookingStatus) : that.bookingStatus != null)
+            return false;
+        if (paymentId != null ? !paymentId.equals(that.paymentId) : that.paymentId != null) return false;
+        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
+        if (paymentStatus != null ? !paymentStatus.equals(that.paymentStatus) : that.paymentStatus != null)
+            return false;
+        if (bookingType != null ? !bookingType.equals(that.bookingType) : that.bookingType != null) return false;
+        if (bookingSource != null ? !bookingSource.equals(that.bookingSource) : that.bookingSource != null)
+            return false;
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
+        if (bookingEmail != null ? !bookingEmail.equals(that.bookingEmail) : that.bookingEmail != null) return false;
+        return passengers != null ? passengers.equals(that.passengers) : that.passengers == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + userId.hashCode();
-        result = 31 * result + superPnr.hashCode();
-        result = 31 * result + bookingStatus.hashCode();
-        result = 31 * result + paymentId.hashCode();
-        result = 31 * result + amount.hashCode();
-        result = 31 * result + paymentStatus.hashCode();
-        result = 31 * result + bookingType.hashCode();
-        result = 31 * result + bookingSource.hashCode();
-        result = 31 * result + phoneNumber.hashCode();
-        result = 31 * result + bookingEmail.hashCode();
-        result = 31 * result + passengers.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (superPnr != null ? superPnr.hashCode() : 0);
+        result = 31 * result + (bookingStatus != null ? bookingStatus.hashCode() : 0);
+        result = 31 * result + (paymentId != null ? paymentId.hashCode() : 0);
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (paymentStatus != null ? paymentStatus.hashCode() : 0);
+        result = 31 * result + (bookingType != null ? bookingType.hashCode() : 0);
+        result = 31 * result + (bookingSource != null ? bookingSource.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        result = 31 * result + (bookingEmail != null ? bookingEmail.hashCode() : 0);
+        result = 31 * result + (passengers != null ? passengers.hashCode() : 0);
         return result;
     }
 
@@ -170,10 +166,10 @@ public class BookingDTO implements Serializable{
                 "id='" + id + '\'' +
                 ", userId='" + userId + '\'' +
                 ", superPnr='" + superPnr + '\'' +
-                ", bookingStatus=" + bookingStatus +
+                ", bookingStatus='" + bookingStatus + '\'' +
                 ", paymentId='" + paymentId + '\'' +
                 ", amount=" + amount +
-                ", paymentStatus=" + paymentStatus +
+                ", paymentStatus='" + paymentStatus + '\'' +
                 ", bookingType='" + bookingType + '\'' +
                 ", bookingSource='" + bookingSource + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
