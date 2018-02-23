@@ -1,5 +1,6 @@
 package com.coviam.booking.service.impl;
 
+import com.coviam.booking.config.BookingConfig;
 import com.coviam.booking.dto.*;
 import com.coviam.booking.entity.Booking;
 import com.coviam.booking.entity.Passenger;
@@ -10,11 +11,16 @@ import com.coviam.booking.service.BookingService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,9 +33,14 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class BookingServiceImpl implements BookingService {
+
+    @Autowired
+    private EurekaClient eurekaClient;
+
+    @Autowired
+    private BookingConfig bookingConfig;
 
     @Value("${endpoint.getFlightItinerary}")
     private String getFlightItinerary;
@@ -62,6 +73,8 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public BookingDetailsDTO getBookingDetailsFromSuperPnr(String superPnr) {
+        Application application = eurekaClient.getApplication("zuul-service");
+        InstanceInfo instanceInfo = application.getInstances().get(0);
         BookingDetailsDTO bookingDetailsDTO =new BookingDetailsDTO();
         Booking booking = bookingRepository.findBySuperPnr(superPnr);
         LOGGER.info("for superPnr :» " + superPnr + " : " + booking);
@@ -69,7 +82,10 @@ public class BookingServiceImpl implements BookingService {
         BeanUtils.copyProperties(booking, bookingDTO);
         bookingDetailsDTO.setBookingDetails(bookingDTO);
 
-        final String uriString = getFlightItinerary;
+        /** getting the hosts from the service discovery **/
+        final String uriString = "http://"+instanceInfo.getIPAddr()+":"+instanceInfo.getPort()+"/flight/getFlightItinerary";
+        System.out.println(uriString);
+        //getFlightItinerary;
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(uriString).queryParam("superPnr", superPnr);
@@ -112,6 +128,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public BookingDTO createBooking(BookingDTO bookingDTO) {
+        //System.out.println(bookingConfig.flightinfos());
         Booking booking = inflateFromBookingDTO(bookingDTO);
         Booking bookingCreated = bookingRepository.save(booking);
         LOGGER.info("inserted : " + bookingCreated);
